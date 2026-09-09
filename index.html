@@ -79,6 +79,7 @@
         }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script id="tailwind-config">
         tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed": "#6ffbbe", "on-secondary-fixed-variant": "#005236", "primary": "#3525cd", "on-error": "#ffffff", "on-surface-variant": "#464555", "primary-fixed": "#e2dfff", "outline-variant": "#c7c4d8", "secondary-container": "#6cf8bb", "on-tertiary-container": "#ffd4a4", "surface-container-lowest": "#ffffff", "surface-container-high": "#dce9ff", "tertiary-container": "#885500", "on-secondary": "#ffffff", "tertiary": "#684000", "inverse-on-surface": "#eaf1ff", "on-primary-container": "#dad7ff", "surface-container": "#e5eeff", "primary-container": "#4f46e5", "error-container": "#ffdad6", "surface-variant": "#d3e4fe", "tertiary-fixed": "#ffddb8", "on-tertiary-fixed": "#2a1700", "surface-dim": "#cbdbf5", "on-primary-fixed": "#0f0069", "on-error-container": "#93000a", "background": "#f8f9ff", "primary-fixed-dim": "#c3c0ff", "inverse-primary": "#c3c0ff", "surface-container-low": "#eff4ff", "surface": "#f8f9ff", "error": "#ba1a1a", "on-surface": "#0b1c30", "surface-tint": "#4d44e3", "surface-container-highest": "#d3e4fe", "on-secondary-fixed": "#002113", "inverse-surface": "#213145", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "outline": "#777587", "on-tertiary-fixed-variant": "#653e00", "tertiary-fixed-dim": "#ffb95f", "surface-bright": "#f8f9ff", "secondary": "#006c49", "on-primary": "#ffffff", "on-background": "#0b1c30", "on-tertiary": "#ffffff", "on-secondary-container": "#00714d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xxs": "0.25rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-2xl": "3rem", "space-md": "1rem", "gutter-mobile": "1rem", "max-app-width": "72rem", "space-xs": "0.5rem", "space-3xl": "4rem", "space-sm": "0.75rem", "max-card-width": "36rem", "gutter-desktop": "1.5rem" }, "fontFamily": { "body-sm": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "phonetic-display": ["Plus Jakarta Sans"], "label-caps": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"] }, "fontSize": { "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.025em", "fontWeight": "800" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "phonetic-display": ["18px", { "lineHeight": "26px", "letterSpacing": "0.02em", "fontWeight": "500" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }] } } } };
     </script>
@@ -122,11 +123,15 @@
             </div>
             <!-- Upload -->
             <div class="flex items-center gap-space-sm flex-shrink-0">
-                <input type="file" id="csv-input" accept=".csv" class="hidden" />
+                <select id="sheet-select"
+                    class="hidden max-w-[140px] sm:max-w-[200px] truncate bg-surface-container-lowest border border-outline-variant/30 text-on-surface font-label-md rounded-lg focus:ring-primary focus:border-primary px-3 py-1.5 transition-all cursor-pointer shadow-sm outline-none">
+                </select>
+
+                <input type="file" id="csv-input" accept=".csv, .xlsx, .xls" class="hidden" />
                 <label for="csv-input"
                     class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-fixed/50 hover:bg-primary-fixed text-primary font-label-md cursor-pointer transition-colors border border-primary/20">
                     <span class="material-symbols-outlined text-[18px]">upload_file</span>
-                    <span class="hidden sm:inline">Tải CSV</span>
+                    <span class="hidden sm:inline">Tải Dữ Liệu</span>
                 </label>
             </div>
         </div>
