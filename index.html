@@ -79,26 +79,25 @@
         }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script id="tailwind-config">
-        tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed": "#6ffbbe", "on-secondary-fixed-variant": "#005236", "primary": "#3525cd", "on-error": "#ffffff", "on-surface-variant": "#464555", "primary-fixed": "#e2dfff", "outline-variant": "#c7c4d8", "secondary-container": "#6cf8bb", "on-tertiary-container": "#ffd4a4", "surface-container-lowest": "#ffffff", "surface-container-high": "#dce9ff", "tertiary-container": "#885500", "on-secondary": "#ffffff", "tertiary": "#684000", "inverse-on-surface": "#eaf1ff", "on-primary-container": "#dad7ff", "surface-container": "#e5eeff", "primary-container": "#4f46e5", "error-container": "#ffdad6", "surface-variant": "#d3e4fe", "tertiary-fixed": "#ffddb8", "on-tertiary-fixed": "#2a1700", "surface-dim": "#cbdbf5", "on-primary-fixed": "#0f0069", "on-error-container": "#93000a", "background": "#f8f9ff", "primary-fixed-dim": "#c3c0ff", "inverse-primary": "#c3c0ff", "surface-container-low": "#eff4ff", "surface": "#f8f9ff", "error": "#ba1a1a", "on-surface": "#0b1c30", "surface-tint": "#4d44e3", "surface-container-highest": "#d3e4fe", "on-secondary-fixed": "#002113", "inverse-surface": "#213145", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "outline": "#777587", "on-tertiary-fixed-variant": "#653e00", "tertiary-fixed-dim": "#ffb95f", "surface-bright": "#f8f9ff", "secondary": "#006c49", "on-primary": "#ffffff", "on-background": "#0b1c30", "on-tertiary": "#ffffff", "on-secondary-container": "#00714d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xxs": "0.25rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-2xl": "3rem", "space-md": "1rem", "gutter-mobile": "1rem", "max-app-width": "72rem", "space-xs": "0.5rem", "space-3xl": "4rem", "space-sm": "0.75rem", "max-card-width": "36rem", "gutter-desktop": "1.5rem" }, "fontFamily": { "body-sm": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "phonetic-display": ["Plus Jakarta Sans"], "label-caps": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"] }, "fontSize": { "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "display-hero-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.025em", "fontWeight": "800" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "phonetic-display": ["18px", { "lineHeight": "26px", "letterSpacing": "0.02em", "fontWeight": "500" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "700" }] } } } };
+        tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed": "#6ffbbe", "on-secondary-fixed-variant": "#005236", "primary": "#3525cd", "on-error": "#ffffff", "on-surface-variant": "#464555", "primary-fixed": "#e2dfff", "outline-variant": "#c7c4d8", "secondary-container": "#6cf8bb", "on-tertiary-container": "#ffd4a4", "surface-container-lowest": "#ffffff", "surface-container-high": "#dce9ff", "tertiary-container": "#885500", "on-secondary": "#ffffff", "tertiary": "#684000", "inverse-on-surface": "#eaf1ff", "on-primary-container": "#dad7ff", "surface-container": "#e5eeff", "primary-container": "#4f46e5", "error-container": "#ffdad6", "surface-variant": "#d3e4fe", "tertiary-fixed": "#ffddb8", "on-tertiary-fixed": "#2a1700", "surface-dim": "#cbdbf5", "on-primary-fixed": "#0f0069", "on-error-container": "#93000a", "background": "#f8f9ff", "primary-fixed-dim": "#c3c0ff", "inverse-primary": "#c3c0ff", "surface-container-low": "#eff4ff", "surface": "#f8f9ff", "error": "#ba1a1a", "on-surface": "#0b1c30", "surface-tint": "#4d44e3", "surface-container-highest": "#d3e4fe", "on-secondary-fixed": "#002113", "inverse-surface": "#213145", "secondary-fixed-dim": "#4edea3", "on-primary-fixed-variant": "#3323cc", "outline": "#777587", "on-tertiary-fixed-variant": "#653e00", "tertiary-fixed-dim": "#ffb95f", "surface-bright": "#f8f9ff", "secondary": "#006c49", "on-primary": "#ffffff", "on-background": "#0b1c30", "on-tertiary": "#ffffff", "on-secondary-container": "#00714d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xxs": "0.25rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-2xl": "3rem", "space-md": "1rem", "gutter-mobile": "1rem", "max-app-width": "72rem", "space-xs": "0.5rem", "space-3xl": "4rem", "space-sm": "0.75rem", "max-card-width": "36rem", "gutter-desktop": "1.5rem" }, "fontFamily": { "body-sm": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "phonetic-display": ["Plus Jakarta Sans"], "label-caps": ["Plus Jakarta Sans"] } } } };
     </script>
 </head>
 
 <body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER -->
     <header
         class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,23,42,0.05)]">
         <div
             class="h-16 max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-md">
+
+            <!-- Logo & Tabs -->
             <div class="flex items-center gap-space-md min-w-0">
                 <div class="flex items-center gap-space-xs flex-shrink-0">
                     <span
-                        class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight hidden sm:inline">LexiCard</span>
+                        class="font-headline-sm text-primary font-bold tracking-tight hidden sm:inline">LexiCard</span>
                 </div>
                 <div class="h-4 w-px bg-outline-variant hidden xl:block"></div>
-                <!-- Tabs -->
                 <div id="mode-tabs"
                     class="hidden flex bg-surface-container-low p-1 rounded-lg overflow-x-auto hide-scroll">
                     <button data-mode="flashcard"
@@ -113,426 +112,126 @@
                     <button data-mode="recall"
                         class="tab-btn px-3 py-1.5 rounded-md font-label-md text-on-surface-variant hover:text-on-surface transition-all whitespace-nowrap">Đoán
                         từ</button>
-                    <button data-mode="match"
-                        class="tab-btn px-3 py-1.5 rounded-md font-label-md text-on-surface-variant hover:text-on-surface transition-all whitespace-nowrap">Nối
-                        từ</button>
                     <button data-mode="recall-typing"
                         class="tab-btn px-3 py-1.5 rounded-md font-label-md text-on-surface-variant hover:text-on-surface transition-all whitespace-nowrap">Gõ
                         từ</button>
+                    <button data-mode="match"
+                        class="tab-btn px-3 py-1.5 rounded-md font-label-md text-on-surface-variant hover:text-on-surface transition-all whitespace-nowrap">Nối
+                        từ</button>
                 </div>
             </div>
-            <!-- Upload -->
+
+            <!-- Công cụ (Sheet, Upload, Cài đặt) -->
             <div class="flex items-center gap-space-sm flex-shrink-0">
                 <select id="sheet-select"
-                    class="hidden max-w-[140px] sm:max-w-[200px] truncate bg-surface-container-lowest border border-outline-variant/30 text-on-surface font-label-md rounded-lg focus:ring-primary focus:border-primary px-3 py-1.5 transition-all cursor-pointer shadow-sm outline-none">
-                </select>
+                    class="hidden max-w-[140px] sm:max-w-[200px] truncate bg-surface-container-lowest border border-outline-variant/30 text-on-surface font-label-md rounded-lg focus:ring-primary outline-none px-3 py-1.5 cursor-pointer shadow-sm"></select>
 
                 <input type="file" id="csv-input" accept=".csv, .xlsx, .xls" class="hidden" />
                 <label for="csv-input"
                     class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-fixed/50 hover:bg-primary-fixed text-primary font-label-md cursor-pointer transition-colors border border-primary/20">
-                    <span class="material-symbols-outlined text-[18px]">upload_file</span>
-                    <span class="hidden sm:inline">Tải Dữ Liệu</span>
+                    <span class="material-symbols-outlined text-[18px]">upload_file</span><span
+                        class="hidden sm:inline">Tải Dữ Liệu</span>
                 </label>
+
+                <button id="btn-open-settings"
+                    class="p-2 rounded-lg text-outline-variant hover:text-on-surface hover:bg-surface-container-low transition-colors"
+                    title="Cài đặt">
+                    <span class="material-symbols-outlined text-[24px]">settings</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- EMPTY STATE -->
-    <main id="view-empty"
-        class="view-section w-full pt-16 flex-1 flex flex-col items-center justify-center min-h-[calc(100vh-8rem)]">
-        <span class="material-symbols-outlined text-[64px] text-outline-variant mb-4">folder_open</span>
-        <h2 class="text-headline-md font-bold text-primary mb-2">Chưa có dữ liệu</h2>
-        <p class="text-on-surface-variant mb-4">Vui lòng tải lên file CSV để bắt đầu.</p>
-    </main>
+    <!-- KHUNG CHỨA COMPONENT (Mọi Module JS sẽ bơm HTML vào đây) -->
+    <main id="app-root" class="w-full pt-16 flex-1 bg-background flex flex-col justify-center"></main>
 
-    <!-- MODE 1: FLASHCARD (Giao diện chuẩn gốc) -->
-    <main id="view-flashcard" class="view-section w-full pt-16 flex-1 hidden">
-        <div class="max-w-[760px] mx-auto px-gutter-desktop py-space-xl flex flex-col items-center justify-center">
-            <div class="w-full flex items-center justify-between text-body-sm text-on-surface-variant mb-space-xs px-1">
-                <span class="font-label-md uppercase tracking-wider font-semibold text-primary">Flashcard Mode</span>
-                <div class="flex items-center gap-space-xs font-bold text-primary"><span id="fc-current">0</span> /
-                    <span id="fc-total">0</span>
-                </div>
-            </div>
-            <div
-                class="w-full bg-surface-container-lowest rounded-2xl shadow-md border border-outline-variant/30 p-space-xl transition-all relative">
-                <div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
-                    <div class="flex items-center gap-space-xs">
-                        <span id="fc-level"
-                            class="px-2.5 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed font-label-caps uppercase font-bold text-[11px]">Level</span>
-                        <span id="fc-pos"
-                            class="px-2 py-0.5 rounded-md bg-surface-container-low text-on-surface-variant font-label-md italic">pos</span>
-                    </div>
-                </div>
-                <div class="pt-space-md pb-space-sm flex flex-col items-center text-center">
-                    <h1 id="fc-word"
-                        class="font-display-hero text-[40px] md:text-display-hero text-primary font-bold tracking-tight mb-1">
-                        Word</h1>
-                    <div class="flex items-center gap-space-xs mt-1">
-                        <span id="fc-phonetic"
-                            class="font-phonetic-display text-on-surface-variant font-medium">/phonetic/</span>
-                        <button id="fc-audio"
-                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-low hover:bg-surface-container text-primary transition-all active:scale-95 ml-1">
-                            <span class="material-symbols-outlined text-[18px]">volume_up</span><span
-                                class="font-label-caps uppercase font-bold">US</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="mt-space-md flex flex-col gap-space-md border-t border-outline-variant/20 pt-space-md">
-                    <div class="bg-surface-container-low/70 p-space-md rounded-xl">
-                        <div
-                            class="font-label-caps text-primary uppercase font-bold tracking-wider mb-1 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[15px]">translate</span><span>Định nghĩa</span>
-                        </div>
-                        <p id="fc-meaning" class="font-body-lg text-on-surface font-semibold leading-relaxed">Meaning
-                        </p>
-                    </div>
-                    <div class="p-space-md rounded-xl bg-surface-variant/20">
-                        <div
-                            class="font-label-caps text-on-surface-variant uppercase font-bold tracking-wider mb-1.5 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[15px] text-secondary">menu_book</span><span>Ví
-                                dụ ngữ cảnh</span>
-                        </div>
-                        <p id="fc-ex-en" class="font-body-md text-on-surface italic leading-normal">Example EN</p>
-                        <p id="fc-ex-vi" class="font-body-sm text-on-surface-variant mt-1.5 font-normal">Example VI</p>
-                    </div>
-                    <div class="flex flex-col gap-1.5 px-1 mt-2">
-                        <div class="font-label-caps text-on-surface-variant uppercase font-bold tracking-wider">
-                            Collocations</div>
-                        <div id="fc-collocations" class="flex flex-wrap gap-space-xs"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="w-full flex items-center justify-between gap-space-md mt-space-lg">
-                <button id="fc-prev"
-                    class="flex-1 flex items-center justify-center gap-space-xs py-space-sm px-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/40 text-on-surface font-label-lg shadow-sm transition-all active:translate-y-0.5"><span
-                        class="material-symbols-outlined text-[20px]">arrow_back</span><span
-                        class="font-bold">Trước</span></button>
-                <button id="fc-audio-btn"
-                    class="px-space-md py-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-label-md flex items-center gap-1.5 border border-outline-variant/30 transition-all active:translate-y-0.5"><span
-                        class="material-symbols-outlined text-[20px]">volume_up</span><span
-                        class="hidden sm:inline font-semibold">Nghe</span></button>
-                <button id="fc-next"
-                    class="flex-1 flex items-center justify-center gap-space-xs py-space-sm px-space-md rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-lg shadow-md transition-all active:translate-y-0.5"><span
-                        class="font-bold">Sau</span><span
-                        class="material-symbols-outlined text-[20px]">arrow_forward</span></button>
-            </div>
-        </div>
-    </main>
-
-    <!-- MODE 2: LISTENING (Trắc nghiệm âm thanh chuẩn gốc) -->
-    <main id="view-listening" class="view-section w-full pt-16 flex-1 bg-background hidden">
+    <footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-sm mt-auto z-10">
         <div
-            class="flex flex-col w-full max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-lg select-none">
-            <div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-lg">
-                <span
-                    class="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-md font-bold uppercase tracking-wider">Dạng
-                    1: Nghe Nhận Diện</span>
-                <div
-                    class="flex items-center gap-space-sm bg-surface-container-lowest px-space-sm py-1.5 rounded-full shadow-sm">
-                    <span class="font-label-md text-primary font-bold">Câu <span id="ls-current">1</span> / <span
-                            id="ls-total">0</span></span>
-                </div>
-            </div>
-            <div class="w-full max-w-max-card-width mx-auto flex flex-col items-center">
-                <div class="text-center mb-space-xl">
-                    <h2 class="font-headline-sm text-on-surface font-bold mb-space-xxs">Nghe phát âm và chọn từ chính
-                        xác</h2>
-                </div>
-                <div
-                    class="w-full bg-surface-container-lowest rounded-xl p-space-xl shadow-md relative overflow-hidden flex flex-col items-center justify-center mb-space-xl">
-                    <div
-                        class="absolute -top-12 -right-12 w-48 h-48 bg-primary-fixed/40 rounded-full blur-3xl pointer-events-none">
-                    </div>
-                    <div
-                        class="absolute -bottom-12 -left-12 w-48 h-48 bg-secondary-fixed/40 rounded-full blur-3xl pointer-events-none">
-                    </div>
-                    <div class="relative z-10 mb-space-lg">
-                        <div
-                            class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md font-medium">
-                            <span class="material-symbols-outlined text-sm text-primary">lightbulb</span><span>Từ loại:
-                                <strong id="ls-pos" class="text-on-surface font-semibold">()</strong></span>
-                        </div>
-                    </div>
-                    <div class="relative z-10 flex flex-col items-center gap-space-md">
-                        <button id="ls-play-btn"
-                            class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-primary-container text-on-primary shadow-xl hover:scale-105 active:scale-95 transition-all">
-                            <span
-                                class="absolute inset-0 rounded-full bg-primary-container/30 animate-ping pointer-events-none hidden"
-                                id="ls-ping"></span>
-                            <span
-                                class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform">volume_up</span>
-                        </button>
-                    </div>
-                    <div
-                        class="relative z-10 flex items-center justify-between w-full max-w-xs mt-space-lg pt-space-md">
-                        <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-full">
-                            <button id="ls-speed-10"
-                                class="px-2.5 py-1 rounded-full font-label-md text-primary font-bold bg-surface-container-lowest shadow-sm">1.0x</button>
-                            <button id="ls-speed-08"
-                                class="px-2.5 py-1 rounded-full font-label-md text-on-surface-variant font-bold hover:text-on-surface">0.8x</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-space-md mb-space-2xl" id="ls-grid"></div>
-                <div
-                    class="w-full flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-md pb-space-lg">
-                    <button id="ls-skip-btn"
-                        class="w-full sm:w-auto px-space-lg py-3 rounded-lg bg-surface-container-lowest text-on-surface-variant font-label-lg font-semibold shadow-sm hover:bg-surface-container-low transition-all">Bỏ
-                        qua</button>
-                    <button id="ls-check-btn"
-                        class="w-full sm:w-auto px-space-2xl py-3 rounded-lg bg-primary-container text-on-primary font-headline-sm font-bold shadow-md hover:brightness-110 transition-all disabled:opacity-50">Kiểm
-                        tra đáp án</button>
-                </div>
-            </div>
+            class="max-w-[760px] mx-auto px-gutter-desktop flex items-center justify-center text-on-surface-variant font-label-md">
+            <div>© 2026 LexiCard • Học từ vựng Component-based</div>
         </div>
-    </main>
+    </footer>
 
-    <!-- MODE 3: DICTATION (Gõ chính tả siêu xịn chuẩn gốc) -->
-    <main id="view-dictation" class="view-section w-full pt-16 flex-1 hidden bg-background">
-        <div
-            class="flex flex-col w-full max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xl items-center">
-            <div class="w-full max-w-max-card-width flex items-center justify-between mb-space-md">
-                <div class="flex items-center gap-space-xs"><span
-                        class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps uppercase tracking-wider">Dictation
-                        Mode</span></div>
-                <div class="flex items-center gap-space-xxs text-on-surface-variant"><span
-                        class="font-label-md text-primary font-bold">Câu <span id="dict-current">1</span> / <span
-                            id="dict-total">0</span></span></div>
-            </div>
-            <div
-                class="w-full max-w-max-card-width bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col items-center relative overflow-hidden">
-                <div
-                    class="absolute -top-24 -right-24 w-56 h-56 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none">
-                </div>
-                <div
-                    class="absolute -bottom-24 -left-24 w-56 h-56 rounded-full bg-secondary-container/40 blur-3xl pointer-events-none">
-                </div>
-
-                <div class="w-full flex items-center justify-between mb-space-lg z-10">
-                    <div class="flex items-center bg-surface-container-low p-1 rounded-full shadow-inner">
-                        <button id="dict-speed-10"
-                            class="px-space-sm py-1 rounded-full font-label-md bg-surface-container-lowest text-primary font-bold shadow-sm flex items-center gap-1"><span
-                                class="material-symbols-outlined text-sm">play_arrow</span>1.0x</button>
-                        <button id="dict-speed-08"
-                            class="px-space-sm py-1 rounded-full font-label-md text-on-surface-variant hover:text-on-surface flex items-center gap-1"><span
-                                class="material-symbols-outlined text-sm">cruelty_free</span>0.75x</button>
-                    </div>
-                    <span id="dict-char-count"
-                        class="font-label-caps px-space-xs py-1 rounded bg-surface-container text-on-surface-variant font-semibold">0
-                        KÝ TỰ</span>
-                </div>
-
-                <div class="flex flex-col items-center my-space-md z-10">
-                    <button id="dict-play-btn"
-                        class="group relative flex items-center justify-center w-28 h-28 rounded-full bg-primary-container text-on-primary shadow-lg hover:shadow-xl transition-all active:translate-y-0.5 cursor-pointer">
-                        <div id="dict-pulse"
-                            class="absolute inset-0 rounded-full bg-primary-container opacity-25 pointer-events-none hidden">
-                        </div>
-                        <div class="flex flex-col items-center"><span
-                                class="material-symbols-outlined text-4xl transition-transform group-hover:scale-110">volume_up</span><span
-                                class="font-label-caps tracking-wider text-primary-fixed mt-0.5">[Space]</span></div>
-                    </button>
-                </div>
-
-                <div id="dict-slots"
-                    class="w-full flex justify-center items-center gap-space-xs my-space-md z-10 flex-wrap"></div>
-
-                <div class="w-full relative mt-space-sm z-10">
-                    <div
-                        class="relative flex items-center bg-surface-container-low rounded-xl px-space-md py-space-sm focus-within:bg-surface-container-lowest focus-within:shadow-md transition-all">
-                        <span class="material-symbols-outlined text-outline mr-space-sm">edit_note</span>
-                        <input id="dict-input" type="text" spellcheck="false" autocomplete="off"
-                            class="w-full bg-transparent font-headline-sm text-on-surface placeholder:text-outline-variant font-medium focus:outline-none"
-                            placeholder="Gõ từ bạn nghe được... (Enter)" />
-                    </div>
-                    <div id="dict-alert"
-                        class="w-full mt-space-sm p-space-sm rounded-lg text-center hidden transition-all"><span
-                            id="dict-alert-text" class="font-label-lg font-bold"></span></div>
-                </div>
-
-                <div
-                    class="w-full flex flex-col sm:flex-row items-center justify-center gap-space-sm mt-space-lg pt-space-md border-t-0 z-10">
-                    <button id="dict-hint-ipa"
-                        class="px-space-md py-space-xs rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md flex items-center gap-1"><span
-                            class="material-symbols-outlined text-sm">record_voice_over</span>IPA</button>
-                    <button id="dict-hint-vi"
-                        class="px-space-md py-space-xs rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md flex items-center gap-1"><span
-                            class="material-symbols-outlined text-sm">lightbulb</span>Nghĩa TV</button>
-                </div>
-                <div id="dict-panel-ipa"
-                    class="w-full mt-space-sm p-space-sm rounded-lg bg-surface-container text-center hidden animate-fadeIn">
-                    <span id="dict-val-ipa" class="font-phonetic-display text-primary font-semibold"></span>
-                </div>
-                <div id="dict-panel-vi"
-                    class="w-full mt-space-sm p-space-sm rounded-lg bg-surface-container text-center hidden animate-fadeIn">
-                    <p id="dict-val-vi" class="font-body-md text-on-surface"></p>
-                </div>
-
-                <div class="w-full bg-surface-container-low/70 rounded-lg p-space-sm mt-space-md text-left z-10">
-                    <div class="flex items-center gap-1.5 mb-1"><span
-                            class="material-symbols-outlined text-xs text-primary">menu_book</span><span
-                            class="font-label-caps text-on-surface-variant uppercase">Ngữ cảnh</span></div>
-                    <p id="dict-context" class="font-body-sm text-on-surface italic"></p>
-                </div>
-
-                <div class="w-full mt-space-md flex items-center justify-end z-10">
-                    <button id="dict-give-hint" class="font-label-md text-primary font-semibold hover:underline">Gợi ý 1
-                        chữ cái</button>
-                </div>
-            </div>
-            <div
-                class="w-full max-w-max-card-width mt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-                <button id="dict-skip-btn"
-                    class="w-full sm:w-auto px-space-md py-space-sm rounded-lg bg-surface-container-lowest text-outline font-label-lg shadow-sm flex items-center justify-center gap-1"><span>Bỏ
-                        qua</span><span class="material-symbols-outlined text-base">skip_next</span></button>
-                <button id="dict-check-btn"
-                    class="w-full sm:w-auto px-space-xl py-space-sm rounded-lg bg-primary text-on-primary font-label-lg font-bold shadow-md hover:bg-primary-container flex items-center justify-center gap-1"><span>Kiểm
-                        tra</span><span class="material-symbols-outlined text-base">arrow_forward</span></button>
-            </div>
-        </div>
-    </main>
-
-    <!-- MODE 4: RECALL (Đoán từ UI xịn) -->
-    <main id="view-recall" class="view-section w-full pt-16 flex-1 hidden bg-background">
-        <div
-            class="flex flex-col w-full max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-lg items-center">
-            <div class="w-full max-w-max-card-width mb-space-xl text-center">
-                <span
-                    class="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-md font-bold uppercase tracking-wider mb-4">Dạng
-                    3: Active Recall</span>
-                <div
-                    class="w-full bg-surface-container-lowest p-space-xl rounded-2xl shadow-md border border-outline-variant/30 flex flex-col items-center">
-                    <span id="rc-pos"
-                        class="px-2 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed font-label-md italic mb-4">pos</span>
-                    <p id="rc-meaning" class="font-headline-sm text-on-surface font-bold text-center leading-relaxed">
-                        Nghĩa tiếng Việt</p>
-                </div>
-            </div>
-            <div id="rc-grid"
-                class="w-full max-w-max-card-width grid grid-cols-1 md:grid-cols-2 gap-space-md mb-space-xl"></div>
-            <button id="rc-next-btn"
-                class="px-space-2xl py-3 rounded-lg bg-primary text-on-primary font-headline-sm font-bold shadow-md hover:bg-primary-container transition-all hidden">Tiếp
-                tục ➔</button>
-        </div>
-    </main>
-
-    <!-- MODE 5: MATCH (Nối từ UI xịn) -->
-    <main id="view-match" class="view-section w-full pt-16 flex-1 hidden bg-background">
-        <div
-            class="flex flex-col w-full max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-lg items-center">
-
-            <div class="w-full max-w-[900px] flex justify-between items-center mb-space-lg">
-                <span class="font-headline-sm font-bold text-on-surface">Nối từ với nghĩa tương ứng</span>
-                <div
-                    class="font-label-lg font-bold bg-secondary-container/60 text-on-secondary-container px-space-sm py-1 rounded-full flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">bolt</span> <span id="match-score">0</span> / 5
-                </div>
-            </div>
-
-            <!-- Header của 2 cột -->
-            <div class="w-full max-w-[900px] grid grid-cols-2 gap-space-md md:gap-space-2xl mb-space-sm text-center">
-                <div class="font-label-caps uppercase text-primary font-bold tracking-wider">Tiếng Anh</div>
-                <div class="font-label-caps uppercase text-secondary font-bold tracking-wider">Tiếng Việt</div>
-            </div>
-
-            <!-- Grid 2 cột độc lập -->
-            <div class="w-full max-w-[900px] grid grid-cols-2 gap-space-md md:gap-space-2xl">
-                <!-- Cột Trái: Tiếng Anh -->
-                <div id="match-col-en" class="flex flex-col gap-space-sm"></div>
-                <!-- Cột Phải: Tiếng Việt -->
-                <div id="match-col-vi" class="flex flex-col gap-space-sm"></div>
-            </div>
-
-            <button id="match-restart"
-                class="mt-space-xl px-space-2xl py-3 rounded-lg bg-primary text-on-primary font-headline-sm font-bold shadow-md hover:bg-primary-container transition-all hidden">Chơi
-                lại màn khác</button>
-        </div>
-    </main>
-
-    <!-- MODE 6: RECALL TYPING (Nhìn nghĩa gõ từ) -->
-    <main id="view-recall-typing" class="view-section w-full pt-16 flex-1 hidden bg-background">
-        <div
-            class="flex flex-col w-full max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xl items-center">
-
-            <!-- Header Mode -->
-            <div class="w-full max-w-max-card-width flex items-center justify-between mb-space-md">
-                <div class="flex items-center gap-space-xs">
-                    <span
-                        class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps uppercase tracking-wider">Active
-                        Recall Typing</span>
-                </div>
-                <div class="flex items-center gap-space-xxs text-on-surface-variant">
-                    <span class="font-label-md text-primary font-bold">Câu <span id="rct-current">1</span> / <span
-                            id="rct-total">0</span></span>
-                </div>
-            </div>
-
-            <!-- Khung Đề Bài -->
-            <div
-                class="w-full max-w-max-card-width bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col items-center relative overflow-hidden mb-space-lg">
-                <div class="w-full flex items-center justify-between mb-space-md">
-                    <span id="rct-pos"
-                        class="font-label-md italic text-primary bg-primary-fixed/30 px-2 py-0.5 rounded">pos</span>
-                    <span id="rct-char-count"
-                        class="font-label-caps px-space-xs py-1 rounded bg-surface-container text-on-surface-variant font-semibold">0
-                        KÝ TỰ</span>
-                </div>
-
-                <p id="rct-meaning"
-                    class="font-headline-sm text-on-surface font-bold text-center leading-relaxed my-space-md">
-                    Nghĩa tiếng Việt sẽ hiển thị ở đây
-                </p>
-
-                <!-- Input Area -->
-                <div class="w-full relative mt-space-lg">
-                    <div
-                        class="relative flex items-center bg-surface-container-low rounded-xl px-space-md py-space-sm focus-within:bg-surface-container-lowest focus-within:shadow-md transition-all border border-transparent focus-within:border-primary/30">
-                        <span class="material-symbols-outlined text-outline mr-space-sm">keyboard</span>
-                        <input id="rct-input" type="text" spellcheck="false" autocomplete="off"
-                            class="w-full bg-transparent font-headline-sm text-on-surface placeholder:text-outline-variant font-medium focus:outline-none text-center"
-                            placeholder="Gõ từ tiếng Anh tương ứng..." />
-                    </div>
-                    <div id="rct-alert"
-                        class="w-full mt-space-sm p-space-sm rounded-lg text-center hidden transition-all">
-                        <span id="rct-alert-text" class="font-label-lg font-bold"></span>
-                    </div>
-                </div>
-
-                <!-- Panel Ví dụ (Chỉ hiện khi trả lời xong) -->
-                <div id="rct-panel-en"
-                    class="w-full bg-surface-container-low/70 rounded-lg p-space-sm mt-space-md text-left hidden animate-fadeIn">
-                    <div class="flex items-center gap-1.5 mb-1"><span
-                            class="material-symbols-outlined text-xs text-primary">menu_book</span><span
-                            class="font-label-caps text-on-surface-variant uppercase">Ví dụ ngữ cảnh</span></div>
-                    <p id="rct-val-en" class="font-body-sm text-on-surface italic"></p>
-                </div>
-
-                <!-- Footer của Card -->
-                <div class="w-full mt-space-md flex items-center justify-end">
-                    <button id="rct-give-hint" class="font-label-md text-primary font-semibold hover:underline">Gợi ý 1
-                        chữ cái</button>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div
-                class="w-full max-w-max-card-width flex flex-col sm:flex-row items-center justify-between gap-space-sm">
-                <button id="rct-skip-btn"
-                    class="w-full sm:w-auto px-space-md py-space-sm rounded-lg bg-surface-container-lowest text-outline font-label-lg shadow-sm flex items-center justify-center gap-1 hover:bg-surface-container transition-all">
-                    <span>Bỏ qua</span><span class="material-symbols-outlined text-base">skip_next</span>
-                </button>
-                <button id="rct-check-btn"
-                    class="w-full sm:w-auto px-space-xl py-space-sm rounded-lg bg-primary text-on-primary font-label-lg font-bold shadow-md hover:bg-primary-container flex items-center justify-center gap-1 transition-all">
-                    <span>Kiểm tra</span><span class="material-symbols-outlined text-base">arrow_forward</span>
+    <!-- MODAL CÀI ĐẶT -->
+    <div id="settings-modal"
+        class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-surface-container-lowest w-full max-w-sm rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
+            <div class="flex items-center justify-between p-4 border-b border-outline-variant/30">
+                <h3 class="font-headline-sm font-bold text-on-surface">Cài đặt luyện tập</h3>
+                <button id="btn-close-settings"
+                    class="p-1 rounded-full text-outline-variant hover:text-error hover:bg-error-container/50 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
 
-        </div>
-    </main>
+            <div class="p-6 flex flex-col gap-5">
+                <!-- 1. Cài đặt Auto-next -->
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="font-label-lg font-bold text-on-surface">Tự động chuyển câu</div>
+                        <div class="font-body-sm text-on-surface-variant">Tự chuyển sang câu mới khi đúng.</div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                        <input type="checkbox" id="toggle-autonext" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-outline-variant/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                        </div>
+                    </label>
+                </div>
 
-    <!-- Module Loader -->
+                <!-- 1.1 Thời gian Auto-next -->
+                <div class="flex items-center justify-between pl-4 border-l-2 border-outline-variant/30 transition-opacity"
+                    id="box-autonext-delay">
+                    <div class="font-label-md font-semibold text-on-surface-variant">Thời gian chờ:</div>
+                    <select id="select-autonext-delay"
+                        class="bg-surface-container-low border border-outline-variant/30 text-on-surface font-label-md rounded-lg focus:ring-primary outline-none px-2 py-1.5 cursor-pointer shadow-sm">
+                        <option value="1000">1.0 giây (Nhanh)</option>
+                        <option value="1500">1.5 giây (Chuẩn)</option>
+                        <option value="2000">2.0 giây (Chậm)</option>
+                        <option value="3000">3.0 giây (Rất chậm)</option>
+                    </select>
+                </div>
+
+                <hr class="border-outline-variant/20">
+
+                <!-- 2. Cài đặt Gợi ý Nghe & Gõ -->
+                <div>
+                    <div class="font-label-lg font-bold text-on-surface mb-1">Chế độ Nghe & Gõ</div>
+                    <div class="font-body-sm text-on-surface-variant mb-3">Tự động hiển thị sau khi nộp đáp án:</div>
+
+                    <div class="flex flex-col gap-3 pl-4 border-l-2 border-outline-variant/30">
+                        <div class="flex items-center justify-between">
+                            <div class="font-label-md font-semibold text-on-surface-variant">Hiện Phiên âm (IPA)</div>
+                            <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                <input type="checkbox" id="toggle-autoshow-ipa" class="sr-only peer">
+                                <div
+                                    class="w-9 h-5 bg-outline-variant/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary">
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="font-label-md font-semibold text-on-surface-variant">Hiện Nghĩa Tiếng Việt</div>
+                            <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                <input type="checkbox" id="toggle-autoshow-vi" class="sr-only peer">
+                                <div
+                                    class="w-9 h-5 bg-outline-variant/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm thư viện SheetJS ở đây -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+    <!-- Khởi chạy JS -->
     <script type="module" src="js/app.js"></script>
+
 </body>
 
 </html>

@@ -1,27 +1,68 @@
 import { shuffle } from '../utils.js';
 
 export default {
-    data: [], currentItem: null, isChecked: false,
+    id: 'recall',
+    data: [], settings: {}, currentItem: null, isChecked: false, index: 0,
 
-    init(data) {
-        this.data = shuffle(data);
+    template() {
+        return `
+        <div class="flex flex-col w-full max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-lg items-center animate-fadeIn">
+            
+            <!-- Thêm Tracker Tiến độ -->
+            <div class="w-full max-w-max-card-width flex items-center justify-between mb-space-md">
+                <div class="flex items-center gap-space-xs"><span class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps uppercase tracking-wider">Active Recall</span></div>
+                <div class="flex items-center gap-space-xxs text-on-surface-variant"><span class="font-label-md text-primary font-bold">Câu <span id="rc-current">1</span> / <span id="rc-total">0</span></span></div>
+            </div>
+
+            <div class="w-full max-w-max-card-width mb-space-xl text-center">
+                <h2 class="font-headline-sm text-on-surface font-bold mb-space-sm">Đọc định nghĩa và chọn từ đúng</h2>
+                <div class="w-full bg-surface-container-lowest p-space-xl rounded-2xl shadow-md border border-outline-variant/30 flex flex-col items-center">
+                    <span id="rc-pos" class="px-2 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed font-label-md italic mb-4">pos</span>
+                    <p id="rc-meaning" class="font-headline-sm text-on-surface font-bold text-center leading-relaxed">Nghĩa tiếng Việt</p>
+                </div>
+            </div>
+            
+            <div id="rc-grid" class="w-full max-w-max-card-width grid grid-cols-1 md:grid-cols-2 gap-space-md mb-space-xl"></div>
+            <button id="rc-next-btn" class="px-space-2xl py-3 rounded-lg bg-primary text-on-primary font-headline-sm font-bold shadow-md hover:bg-primary-container transition-all hidden">Tiếp tục ➔</button>
+        </div>
+        `;
+    },
+
+    init(data, settings) {
+        this.data = shuffle(data); // Trộn kho từ 1 lần duy nhất lúc bắt đầu
+        this.settings = settings;
+        this.index = 0; // Đặt biến đếm về 0
+
+        document.getElementById('rc-next-btn').onclick = () => { this.index++; this.loadQuestion(); };
         this.loadQuestion();
     },
 
     loadQuestion() {
+        if (window.autoNextTimer) clearTimeout(window.autoNextTimer);
+
+        // Kiểm tra nếu đã học hết từ
+        if (this.index >= this.data.length) {
+            alert("Chúc mừng bạn đã hoàn thành bài tập Đoán từ!");
+            return;
+        }
+
         this.isChecked = false;
-        this.currentItem = shuffle(this.data)[0];
+        this.currentItem = this.data[this.index]; // Lấy tuần tự không bị lặp
+
+        // Cập nhật UI Tiến độ
+        document.getElementById('rc-current').textContent = this.index + 1;
+        document.getElementById('rc-total').textContent = this.data.length;
 
         document.getElementById('rc-meaning').textContent = this.currentItem.meaning;
         const elPos = document.getElementById('rc-pos');
         if (this.currentItem.pos) {
-            elPos.textContent = this.currentItem.pos;
+            elPos.textContent = `(${this.currentItem.pos})`;
             elPos.classList.remove('hidden');
-        } else {
-            elPos.classList.add('hidden');
-        }
+        } else elPos.classList.add('hidden');
+
         document.getElementById('rc-next-btn').classList.add('hidden');
 
+        // Tạo đáp án gây nhiễu
         let pool = this.data.filter(f => f.word !== this.currentItem.word);
         let options = shuffle(pool).slice(0, 3);
         options.push(this.currentItem);
@@ -57,7 +98,10 @@ export default {
 
         const nextBtn = document.getElementById('rc-next-btn');
         nextBtn.classList.remove('hidden');
-        nextBtn.onclick = () => this.loadQuestion();
+
+        if (isCorrect && this.settings && this.settings.autoNext) {
+            window.autoNextTimer = setTimeout(() => { nextBtn.click(); }, this.settings.autoNextDelay);
+        }
     },
 
     handleKeydown(e) {

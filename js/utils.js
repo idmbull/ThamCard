@@ -13,23 +13,18 @@ export const parseCSV = (strData) => {
     if (currentRow.length > 0) arrData.push(currentRow);
 
     const flashcards = [];
-    for (let i = 1; i < arrData.length; i++) { // Bỏ qua dòng Header (dòng 0)
+    for (let i = 1; i < arrData.length; i++) { // Bỏ qua dòng Header
         const r = arrData[i];
 
-        // Cấu trúc mới: 0:word, 1:phonetic, 2:pos, 3:meaning_vi, 4:level, 5:ex_en, 6:ex_vi, 7:collocations
-        // Kiểm tra xem dòng có cột word không thì mới xử lý
-        if (r.length >= 7 && r[0] && r[0].trim() !== "") {
+        // CHỈ CẦN CỘT 0 (TỪ VỰNG) CÓ CHỮ LÀ SẼ LẤY, CÁC CỘT KHÁC TRỐNG CŨNG KHÔNG SAO
+        if (r && r.length > 0 && r[0] && r[0].trim() !== "") {
             flashcards.push({
                 id: i,
-                word: r[0].trim(),
+                word: r[0] ? r[0].trim() : '',
                 phonetic: r[1] ? r[1].trim() : '',
                 pos: r[2] ? r[2].trim() : '',
-
-                // --- ĐÃ ĐỔI VỊ TRÍ 2 CỘT NÀY CHO NHAU ---
                 meaning: r[3] ? r[3].trim() : '',
                 level: r[4] ? r[4].trim() : '',
-                // ----------------------------------------
-
                 ex_en: r[5] ? r[5].trim() : '',
                 ex_vi: r[6] ? r[6].trim() : '',
                 collocations: r[7] ? r[7].trim() : ''
