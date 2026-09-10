@@ -2,7 +2,7 @@ import { speak, shuffle } from '../utils.js';
 
 export default {
     id: 'recall-typing',
-    data: [], settings: {}, currentItem: null, isChecked: false, index: 0, hintClicks: 0,
+    data: [], settings: {}, currentItem: null, isChecked: false, index: 0, hintClicks: 0, saveProgress: null,
 
     template() {
         return `
@@ -46,17 +46,22 @@ export default {
         `;
     },
 
-    init(data, settings) {
+    init(data, settings, savedIndex, saveProgressFn) {
         this.data = shuffle(data);
         this.settings = settings;
-        this.index = 0;
+        this.index = savedIndex || 0;
+        this.saveProgress = saveProgressFn;
 
         this.bindEvents();
         this.loadQuestion();
     },
 
     bindEvents() {
-        document.getElementById('rct-skip-btn').onclick = () => { this.index++; this.loadQuestion(); };
+        document.getElementById('rct-skip-btn').onclick = () => {
+            this.index++;
+            if (this.saveProgress) this.saveProgress(this.index);
+            this.loadQuestion();
+        };
         document.getElementById('rct-check-btn').onclick = () => this.checkAnswer();
 
         const inputField = document.getElementById('rct-input');
@@ -79,6 +84,7 @@ export default {
         document.getElementById('rct-current').textContent = this.index + 1;
         document.getElementById('rct-total').textContent = this.data.length;
         document.getElementById('rct-char-count').textContent = `${word.length} KÝ TỰ`;
+
         document.getElementById('rct-meaning').textContent = this.currentItem.meaning;
 
         const elPos = document.getElementById('rct-pos');
@@ -98,7 +104,12 @@ export default {
     },
 
     checkAnswer() {
-        if (this.isChecked) { this.index++; this.loadQuestion(); return; }
+        if (this.isChecked) {
+            this.index++;
+            if (this.saveProgress) this.saveProgress(this.index);
+            this.loadQuestion();
+            return;
+        }
 
         const inputField = document.getElementById('rct-input');
         const userAnswer = inputField.value.trim().toLowerCase();
@@ -128,7 +139,6 @@ export default {
 
             speak(this.currentItem.word, 1.0);
 
-            // TỰ ĐỘNG NEXT (+500ms để nghe xong âm thanh)
             if (this.settings && this.settings.autoNext) {
                 window.autoNextTimer = setTimeout(() => { checkBtn.click(); }, this.settings.autoNextDelay + 500);
             }

@@ -1,6 +1,6 @@
 import { parseCSV } from './utils.js';
 
-// Import các Module Components
+// Import Các Modules Components
 import ModeFlashcard from './modules/Flashcard.js';
 import ModeListening from './modules/Listening.js';
 import ModeDictation from './modules/Dictation.js';
@@ -8,40 +8,83 @@ import ModeRecall from './modules/Recall.js';
 import ModeRecallTyping from './modules/RecallTyping.js';
 import ModeMatch from './modules/Match.js';
 
-// ... (các dòng import giữ nguyên)
-
 const App = {
     flashcards: [],
     allDataBySheet: {},
     activeModule: null,
     rootEl: null,
 
-    // ĐỊNH NGHĨA SETTINGS CƠ BẢN
-    settings: {
-        autoNext: true,
-        autoNextDelay: 1500, // Chọn 1500 làm chuẩn
-        autoShowIpa: true,   // Bật
-        autoShowVi: true     // Bật
-    },
+    settings: { autoNext: true, autoNextDelay: 1500, autoShowIpa: true, autoShowVi: true },
+    progress: {},
 
-    init() {
+    // HÀM KHỞI TẠO BẤT ĐỒNG BỘ ĐỂ ĐỌC DỮ LIỆU TỪ Ổ CỨNG
+    async init() {
         this.rootEl = document.getElementById('app-root');
         this.loadSettings();
+        this.loadProgress();
         this.bindEvents();
-        this.renderEmptyState();
+
+        try {
+            // 1. Kiểm tra xem trong ổ cứng có lưu file từ vựng nào từ trước không
+            const savedData = await localforage.getItem('lexicard_vocab_data');
+
+            if (savedData && Object.keys(savedData).length > 0) {
+                // 2. Nếu có, tải vào RAM
+                this.allDataBySheet = savedData;
+
+                // 3. Khôi phục lại cái Sheet cuối cùng người dùng đang học
+                const lastSheet = localStorage.getItem('lexicard_last_sheet') || 'ALL';
+
+                // Khởi động UI
+                this.updateSheetSelector(lastSheet);
+            } else {
+                // Nếu chưa có file nào -> Hiện màn hình trống
+                this.renderEmptyState();
+            }
+        } catch (error) {
+            console.error("Lỗi khi khôi phục dữ liệu từ IndexedDB:", error);
+            this.renderEmptyState();
+        }
     },
 
-    loadSettings() {
-        // Đọc từ LocalStorage
-        const saved = localStorage.getItem('lexicard_settings');
-        if (saved) {
-            this.settings = { ...this.settings, ...JSON.parse(saved) };
+    renderEmptyState() {
+        if (this.rootEl) {
+            this.rootEl.innerHTML = `
+                <div class="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] animate-fadeIn">
+                    <span class="material-symbols-outlined text-[64px] text-outline-variant mb-4">folder_open</span>
+                    <h2 class="text-headline-md font-bold text-primary mb-2">Chưa có dữ liệu</h2>
+                    <p class="text-on-surface-variant mb-4">Vui lòng tải lên file CSV hoặc Excel để bắt đầu.</p>
+                </div>
+            `;
         }
+    },
 
-        // --- LIÊN KẾT GIAO DIỆN ---
+    // --- QUẢN LÝ TIẾN ĐỘ ---
+    loadProgress() {
+        const savedProgress = localStorage.getItem('lexicard_progress');
+        if (savedProgress) this.progress = JSON.parse(savedProgress);
+    },
+
+    saveProgress(modeId, index) {
+        this.progress[modeId] = index;
+        localStorage.setItem('lexicard_progress', JSON.stringify(this.progress));
+    },
+
+    resetProgress() {
+        this.progress = {};
+        localStorage.removeItem('lexicard_progress');
+        localStorage.removeItem('lexicard_last_sheet');
+        if (this.activeModule && this.flashcards.length > 0) {
+            this.activeModule.init(this.flashcards, this.settings, 0, (idx) => this.saveProgress(this.activeModule.id, idx));
+        }
+    },
+
+    // --- QUẢN LÝ CÀI ĐẶT ---
+    loadSettings() {
+        const saved = localStorage.getItem('lexicard_settings');
+        if (saved) this.settings = { ...this.settings, ...JSON.parse(saved) };
         const saveToLocal = () => localStorage.setItem('lexicard_settings', JSON.stringify(this.settings));
 
-        // 1. Nút Auto Next
         const toggleAutoNext = document.getElementById('toggle-autonext');
         const boxDelay = document.getElementById('box-autonext-delay');
         const selectDelay = document.getElementById('select-autonext-delay');
@@ -50,52 +93,43 @@ const App = {
             toggleAutoNext.checked = this.settings.autoNext;
             selectDelay.value = this.settings.autoNextDelay.toString();
 
-            // Làm mờ ô chọn thời gian nếu tắt Auto-next
-            const updateDelayUI = (isActive) => {
-                boxDelay.style.opacity = isActive ? '1' : '0.5';
-                selectDelay.disabled = !isActive;
-            };
+            const updateDelayUI = (isActive) => { boxDelay.style.opacity = isActive ? '1' : '0.5'; selectDelay.disabled = !isActive; };
             updateDelayUI(this.settings.autoNext);
 
-            // Bắt sự kiện Gạt Auto Next
-            toggleAutoNext.addEventListener('change', (e) => {
-                this.settings.autoNext = e.target.checked;
-                updateDelayUI(e.target.checked);
-                saveToLocal();
-            });
-
-            // Bắt sự kiện Đổi thời gian
-            selectDelay.addEventListener('change', (e) => {
-                this.settings.autoNextDelay = parseInt(e.target.value);
-                saveToLocal();
-            });
+            toggleAutoNext.addEventListener('change', (e) => { this.settings.autoNext = e.target.checked; updateDelayUI(e.target.checked); saveToLocal(); });
+            selectDelay.addEventListener('change', (e) => { this.settings.autoNextDelay = parseInt(e.target.value); saveToLocal(); });
         }
 
-        // 2. Nút Hiện IPA
         const toggleIpa = document.getElementById('toggle-autoshow-ipa');
-        if (toggleIpa) {
-            toggleIpa.checked = this.settings.autoShowIpa;
-            toggleIpa.addEventListener('change', (e) => {
-                this.settings.autoShowIpa = e.target.checked;
-                saveToLocal();
-            });
-        }
+        if (toggleIpa) { toggleIpa.checked = this.settings.autoShowIpa; toggleIpa.addEventListener('change', (e) => { this.settings.autoShowIpa = e.target.checked; saveToLocal(); }); }
 
-        // 3. Nút Hiện Tiếng Việt
         const toggleVi = document.getElementById('toggle-autoshow-vi');
-        if (toggleVi) {
-            toggleVi.checked = this.settings.autoShowVi;
-            toggleVi.addEventListener('change', (e) => {
-                this.settings.autoShowVi = e.target.checked;
-                saveToLocal();
-            });
-        }
+        if (toggleVi) { toggleVi.checked = this.settings.autoShowVi; toggleVi.addEventListener('change', (e) => { this.settings.autoShowVi = e.target.checked; saveToLocal(); }); }
 
-        // Đóng/Mở Modal
+        // RESET TIẾN ĐỘ
+        document.getElementById('btn-reset-progress')?.addEventListener('click', () => {
+            if (confirm("Xóa tiến độ của file hiện tại để học lại từ đầu?")) {
+                this.resetProgress();
+                document.getElementById('settings-modal').classList.add('hidden');
+            }
+        });
+
+        // XÓA TOÀN BỘ FILE (CLEAR DATA)
+        document.getElementById('btn-clear-data')?.addEventListener('click', async () => {
+            if (confirm("Bạn có chắc muốn xóa file từ vựng khỏi trình duyệt? Bạn sẽ phải tải lại file CSV/Excel để tiếp tục học.")) {
+                await localforage.removeItem('lexicard_vocab_data');
+                localStorage.removeItem('lexicard_last_sheet');
+                this.progress = {};
+                localStorage.removeItem('lexicard_progress');
+                location.reload(); // F5 trình duyệt để clear RAM
+            }
+        });
+
         document.getElementById('btn-open-settings')?.addEventListener('click', () => document.getElementById('settings-modal').classList.remove('hidden'));
         document.getElementById('btn-close-settings')?.addEventListener('click', () => document.getElementById('settings-modal').classList.add('hidden'));
     },
 
+    // --- XỬ LÝ SỰ KIỆN TẢI FILE ---
     bindEvents() {
         const fileInput = document.getElementById('csv-input');
         if (fileInput) {
@@ -103,29 +137,37 @@ const App = {
                 const file = e.target.files[0];
                 if (!file) return;
 
+                // Tải file mới -> Xóa tiến độ cũ
+                this.progress = {};
+                localStorage.removeItem('lexicard_progress');
+
                 const extension = file.name.split('.').pop().toLowerCase();
 
                 if (extension === 'csv') {
                     const reader = new FileReader();
-                    reader.onload = (event) => {
+                    reader.onload = async (event) => {
                         try {
                             const parsedData = parseCSV(event.target.result);
                             this.allDataBySheet = { 'Dữ liệu CSV': parsedData };
-                            this.updateSheetSelector();
-                        } catch (err) {
-                            console.error("Lỗi đọc CSV:", err);
-                            alert("Lỗi khi đọc file CSV! Vui lòng kiểm tra lại dữ liệu.");
-                        }
+
+                            // LƯU VÀO Ổ CỨNG TRÌNH DUYỆT
+                            await localforage.setItem('lexicard_vocab_data', this.allDataBySheet);
+
+                            this.updateSheetSelector('ALL');
+                        } catch (err) { alert("Lỗi khi đọc file CSV! Vui lòng kiểm tra dữ liệu."); }
                     };
                     reader.readAsText(file);
                 }
                 else if (['xlsx', 'xls'].includes(extension)) {
                     const reader = new FileReader();
-                    reader.onload = (event) => {
+                    reader.onload = async (event) => {
                         try {
-                            const data = new Uint8Array(event.target.result);
+                            if (typeof window.XLSX === 'undefined') {
+                                alert("Thư viện Excel chưa được tải! Vui lòng nhấn Ctrl + F5.");
+                                return;
+                            }
 
-                            // Sử dụng window.XLSX thay vì import
+                            const data = new Uint8Array(event.target.result);
                             const workbook = window.XLSX.read(data, { type: 'array' });
                             this.allDataBySheet = {};
 
@@ -137,30 +179,29 @@ const App = {
                                     const r = jsonData[i];
                                     if (r && r.length > 0 && r[0] && r[0].toString().trim() !== "") {
                                         sheetCards.push({
-                                            word: r[0] ? r[0].toString().trim() : '',
-                                            phonetic: r[1] ? r[1].toString().trim() : '',
-                                            pos: r[2] ? r[2].toString().trim() : '',
-                                            meaning: r[3] ? r[3].toString().trim() : '',
-                                            level: r[4] ? r[4].toString().trim() : '',
-                                            ex_en: r[5] ? r[5].toString().trim() : '',
-                                            ex_vi: r[6] ? r[6].toString().trim() : '',
-                                            collocations: r[7] ? r[7].toString().trim() : ''
+                                            word: r[0] ? r[0].toString().trim() : '', phonetic: r[1] ? r[1].toString().trim() : '',
+                                            pos: r[2] ? r[2].toString().trim() : '', meaning: r[3] ? r[3].toString().trim() : '',
+                                            level: r[4] ? r[4].toString().trim() : '', ex_en: r[5] ? r[5].toString().trim() : '',
+                                            ex_vi: r[6] ? r[6].toString().trim() : '', collocations: r[7] ? r[7].toString().trim() : ''
                                         });
                                     }
                                 }
                                 if (sheetCards.length > 0) this.allDataBySheet[sheetName] = sheetCards;
                             });
-                            this.updateSheetSelector();
+
+                            // LƯU VÀO Ổ CỨNG TRÌNH DUYỆT
+                            await localforage.setItem('lexicard_vocab_data', this.allDataBySheet);
+
+                            this.updateSheetSelector('ALL');
                         } catch (error) {
-                            console.error("Lỗi đọc Excel:", error);
-                            alert("Lỗi không thể đọc cấu trúc file Excel!");
+                            console.error(error);
+                            alert("Lỗi đọc Excel: " + error.message);
                         }
                     };
                     reader.readAsArrayBuffer(file);
                 } else {
                     alert("Định dạng file không hỗ trợ!");
                 }
-
                 e.target.value = '';
             });
         }
@@ -168,6 +209,14 @@ const App = {
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const mode = e.target.getAttribute('data-mode');
+
+                // LƯU TIẾN ĐỘ MODULE HIỆN TẠI TRƯỚC KHI CHUYỂN TAB
+                if (this.activeModule && this.activeModule.index !== undefined) {
+                    this.saveProgress(this.activeModule.id, this.activeModule.index);
+                } else if (this.activeModule && this.activeModule.currentIndex !== undefined) {
+                    this.saveProgress(this.activeModule.id, this.activeModule.currentIndex);
+                }
+
                 this.switchMode(mode);
                 document.querySelectorAll('.tab-btn').forEach(b => b.className = "tab-btn px-3 py-1.5 rounded-md font-label-md text-on-surface-variant hover:text-on-surface transition-all whitespace-nowrap");
                 e.target.className = "tab-btn active px-3 py-1.5 rounded-md font-label-md text-primary bg-surface-container-lowest shadow-sm transition-all whitespace-nowrap";
@@ -182,15 +231,13 @@ const App = {
         });
     },
 
-    updateSheetSelector() {
+    // --- CẬP NHẬT SELECTOR (THÊM THAM SỐ defaultSheet) ---
+    updateSheetSelector(defaultSheet = 'ALL') {
         const selector = document.getElementById('sheet-select');
         selector.innerHTML = '';
         const sheetNames = Object.keys(this.allDataBySheet);
 
-        if (sheetNames.length === 0) {
-            alert("File không có dữ liệu từ vựng hợp lệ (Cột đầu tiên bị trống).");
-            return;
-        }
+        if (sheetNames.length === 0) return;
 
         if (sheetNames.length > 1) {
             const optAll = document.createElement('option');
@@ -205,7 +252,21 @@ const App = {
         });
 
         selector.classList.remove('hidden');
-        selector.onchange = (e) => this.loadDataFromSelection(e.target.value);
+
+        // Khôi phục đúng cái Sheet đang học dở
+        if (selector.querySelector(`option[value="${defaultSheet}"]`)) {
+            selector.value = defaultSheet;
+        }
+
+        selector.onchange = (e) => {
+            // Lưu lại sheet vừa chọn vào localStorage
+            localStorage.setItem('lexicard_last_sheet', e.target.value);
+
+            // Tạm reset tiến độ vì đổi dữ liệu
+            this.progress = {};
+            this.loadDataFromSelection(e.target.value);
+        };
+
         this.loadDataFromSelection(selector.value);
     },
 
@@ -220,16 +281,27 @@ const App = {
 
         if (this.flashcards.length >= 5) {
             document.getElementById('mode-tabs').classList.remove('hidden');
-            if (!this.activeModule) this.switchMode('flashcard');
+
+            // Tải lại thẻ Tab đang Active
+            const activeTab = document.querySelector('.tab-btn.active');
+            let defaultMode = 'flashcard';
+            if (activeTab) defaultMode = activeTab.getAttribute('data-mode');
+
+            if (!this.activeModule) this.switchMode(defaultMode);
             else this.switchMode(this.activeModule.id);
-        } else {
-            alert("Sheet này cần ít nhất 5 từ vựng để tạo bài luyện tập trắc nghiệm!");
         }
     },
 
     switchMode(modeId) {
         window.speechSynthesis.cancel();
         if (window.autoNextTimer) clearTimeout(window.autoNextTimer);
+
+        // --- ĐÃ XÓA 2 DÒNG view-section GÂY LỖI NULL Ở ĐÂY ---
+
+        // Khôi phục UI màu sắc của Tab trên thanh Header
+        document.querySelectorAll('.tab-btn').forEach(b => b.className = "tab-btn px-3 py-1.5 rounded-md font-label-md text-on-surface-variant hover:text-on-surface transition-all whitespace-nowrap");
+        const targetTab = document.querySelector(`.tab-btn[data-mode="${modeId}"]`);
+        if (targetTab) targetTab.className = "tab-btn active px-3 py-1.5 rounded-md font-label-md text-primary bg-surface-container-lowest shadow-sm transition-all whitespace-nowrap";
 
         switch (modeId) {
             case 'flashcard': this.activeModule = ModeFlashcard; break;
@@ -241,9 +313,16 @@ const App = {
             default: return;
         }
 
+        // Bơm Giao diện HTML vào khung rỗng app-root
         this.activeModule.id = modeId;
         this.rootEl.innerHTML = this.activeModule.template();
-        this.activeModule.init(this.flashcards, this.settings);
+
+        // Lấy tiến độ đã lưu của Module hiện tại truyền vào init()
+        const savedIndex = this.progress[modeId] || 0;
+
+        this.activeModule.init(this.flashcards, this.settings, savedIndex, (newIndex) => {
+            this.saveProgress(modeId, newIndex);
+        });
     }
 };
 

@@ -2,7 +2,7 @@ import { speak, shuffle } from '../utils.js';
 
 export default {
     id: 'listening',
-    data: [], settings: {}, currentItem: null, selectedWord: null, isChecked: false, audioSpeed: 1.0, index: 0,
+    data: [], settings: {}, currentItem: null, selectedWord: null, isChecked: false, audioSpeed: 1.0, index: 0, saveProgress: null,
 
     template() {
         return `
@@ -13,29 +13,21 @@ export default {
                     <span class="font-label-md text-primary font-bold">Câu <span id="ls-current">1</span> / <span id="ls-total">0</span></span>
                 </div>
             </div>
-            
             <div class="w-full max-w-max-card-width mx-auto flex flex-col items-center">
-                <div class="text-center mb-space-xl">
-                    <h2 class="font-headline-sm text-on-surface font-bold mb-space-xxs">Nghe phát âm và chọn từ chính xác</h2>
-                </div>
-                
                 <div class="w-full bg-surface-container-lowest rounded-xl p-space-xl shadow-md relative overflow-hidden flex flex-col items-center justify-center mb-space-xl">
                     <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary-fixed/40 rounded-full blur-3xl pointer-events-none"></div>
                     <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-secondary-fixed/40 rounded-full blur-3xl pointer-events-none"></div>
-                    
                     <div class="relative z-10 mb-space-lg">
                         <div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md font-medium" id="ls-pos-box">
                             <span class="material-symbols-outlined text-sm text-primary">lightbulb</span><span>Từ loại: <strong id="ls-pos" class="text-on-surface font-semibold">()</strong></span>
                         </div>
                     </div>
-                    
                     <div class="relative z-10 flex flex-col items-center gap-space-md">
                         <button id="ls-play-btn" class="group relative flex items-center justify-center w-24 h-24 rounded-full bg-primary-container text-on-primary shadow-xl hover:scale-105 active:scale-95 transition-all">
                             <span class="absolute inset-0 rounded-full bg-primary-container/30 animate-ping pointer-events-none hidden" id="ls-ping"></span>
                             <span class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform">volume_up</span>
                         </button>
                     </div>
-                    
                     <div class="relative z-10 flex items-center justify-between w-full max-w-xs mt-space-lg pt-space-md">
                         <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-full">
                             <button id="ls-speed-10" class="px-2.5 py-1 rounded-full font-label-md text-primary font-bold bg-surface-container-lowest shadow-sm transition-all">1.0x</button>
@@ -43,9 +35,7 @@ export default {
                         </div>
                     </div>
                 </div>
-                
                 <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-space-md mb-space-2xl" id="ls-grid"></div>
-                
                 <div class="w-full flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-md pb-space-lg">
                     <button id="ls-skip-btn" class="w-full sm:w-auto px-space-lg py-3 rounded-lg bg-surface-container-lowest text-on-surface-variant font-label-lg font-semibold shadow-sm hover:bg-surface-container-low transition-all">Bỏ qua</button>
                     <button id="ls-check-btn" class="w-full sm:w-auto px-space-2xl py-3 rounded-lg bg-primary-container text-on-primary font-headline-sm font-bold shadow-md hover:brightness-110 transition-all hidden">Tiếp tục ➔</button>
@@ -55,10 +45,11 @@ export default {
         `;
     },
 
-    init(data, settings) {
+    init(data, settings, savedIndex, saveProgressFn) {
         this.data = shuffle(data);
         this.settings = settings;
-        this.index = 0;
+        this.index = savedIndex || 0;
+        this.saveProgress = saveProgressFn;
 
         this.bindEvents();
         this.loadQuestion();
@@ -66,8 +57,16 @@ export default {
 
     bindEvents() {
         document.getElementById('ls-play-btn').onclick = () => this.playAudio();
-        document.getElementById('ls-skip-btn').onclick = () => { this.index++; this.loadQuestion(); };
-        document.getElementById('ls-check-btn').onclick = () => { this.index++; this.loadQuestion(); };
+        document.getElementById('ls-skip-btn').onclick = () => {
+            this.index++;
+            if (this.saveProgress) this.saveProgress(this.index);
+            this.loadQuestion();
+        };
+        document.getElementById('ls-check-btn').onclick = () => {
+            this.index++;
+            if (this.saveProgress) this.saveProgress(this.index);
+            this.loadQuestion();
+        };
 
         const s10 = document.getElementById('ls-speed-10');
         const s08 = document.getElementById('ls-speed-08');
@@ -77,7 +76,7 @@ export default {
 
     loadQuestion() {
         if (window.autoNextTimer) clearTimeout(window.autoNextTimer);
-        if (this.index >= this.data.length) { alert("Hoàn thành bài tập!"); return; }
+        if (this.index >= this.data.length) { alert("Chúc mừng! Bạn đã hoàn thành bài tập Nhận Diện."); return; }
 
         this.isChecked = false;
         this.selectedWord = null;
@@ -114,7 +113,6 @@ export default {
                 </div>
                 <span class="ls-icon material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 pointer-events-none">radio_button_unchecked</span>
             `;
-            // Chấm điểm luôn khi click
             btn.onclick = () => {
                 if (!this.isChecked) {
                     this.selectedWord = opt.word;
@@ -152,7 +150,6 @@ export default {
         const checkBtn = document.getElementById('ls-check-btn');
         checkBtn.classList.remove('hidden');
 
-        // TỰ ĐỘNG NEXT
         if (isCorrect && this.settings && this.settings.autoNext) {
             window.autoNextTimer = setTimeout(() => { checkBtn.click(); }, this.settings.autoNextDelay);
         }

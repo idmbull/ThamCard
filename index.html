@@ -86,18 +86,19 @@
 
 <body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
 
+    <!-- HEADER -->
     <header
         class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,23,42,0.05)]">
         <div
             class="h-16 max-w-max-app-width mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-md">
 
-            <!-- Logo & Tabs -->
             <div class="flex items-center gap-space-md min-w-0">
                 <div class="flex items-center gap-space-xs flex-shrink-0">
                     <span
                         class="font-headline-sm text-primary font-bold tracking-tight hidden sm:inline">LexiCard</span>
                 </div>
                 <div class="h-4 w-px bg-outline-variant hidden xl:block"></div>
+                <!-- Tabs -->
                 <div id="mode-tabs"
                     class="hidden flex bg-surface-container-low p-1 rounded-lg overflow-x-auto hide-scroll">
                     <button data-mode="flashcard"
@@ -145,17 +146,19 @@
     <!-- KHUNG CHỨA COMPONENT (Mọi Module JS sẽ bơm HTML vào đây) -->
     <main id="app-root" class="w-full pt-16 flex-1 bg-background flex flex-col justify-center"></main>
 
+    <!-- FOOTER -->
     <footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-sm mt-auto z-10">
         <div
             class="max-w-[760px] mx-auto px-gutter-desktop flex items-center justify-center text-on-surface-variant font-label-md">
-            <div>© 2026 LexiCard • Học từ vựng Component-based</div>
+            <div>© 2026 LexiCard • Hệ thống Học Component-based</div>
         </div>
     </footer>
 
     <!-- MODAL CÀI ĐẶT -->
     <div id="settings-modal"
         class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity">
-        <div class="bg-surface-container-lowest w-full max-w-sm rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
+        <div
+            class="bg-surface-container-lowest w-full max-w-sm rounded-2xl shadow-xl overflow-hidden animate-fadeIn max-h-[90vh] overflow-y-auto hide-scroll">
             <div class="flex items-center justify-between p-4 border-b border-outline-variant/30">
                 <h3 class="font-headline-sm font-bold text-on-surface">Cài đặt luyện tập</h3>
                 <button id="btn-close-settings"
@@ -165,7 +168,7 @@
             </div>
 
             <div class="p-6 flex flex-col gap-5">
-                <!-- 1. Cài đặt Auto-next -->
+                <!-- 1. Auto-next -->
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="font-label-lg font-bold text-on-surface">Tự động chuyển câu</div>
@@ -179,7 +182,6 @@
                     </label>
                 </div>
 
-                <!-- 1.1 Thời gian Auto-next -->
                 <div class="flex items-center justify-between pl-4 border-l-2 border-outline-variant/30 transition-opacity"
                     id="box-autonext-delay">
                     <div class="font-label-md font-semibold text-on-surface-variant">Thời gian chờ:</div>
@@ -194,7 +196,7 @@
 
                 <hr class="border-outline-variant/20">
 
-                <!-- 2. Cài đặt Gợi ý Nghe & Gõ -->
+                <!-- 2. Gợi ý Nghe & Gõ -->
                 <div>
                     <div class="font-label-lg font-bold text-on-surface mb-1">Chế độ Nghe & Gõ</div>
                     <div class="font-body-sm text-on-surface-variant mb-3">Tự động hiển thị sau khi nộp đáp án:</div>
@@ -209,7 +211,6 @@
                                 </div>
                             </label>
                         </div>
-
                         <div class="flex items-center justify-between">
                             <div class="font-label-md font-semibold text-on-surface-variant">Hiện Nghĩa Tiếng Việt</div>
                             <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
@@ -222,16 +223,42 @@
                     </div>
                 </div>
 
+                <hr class="border-outline-variant/20">
+
+                <!-- 3. Quản lý Dữ liệu -->
+                <div class="flex flex-col gap-3">
+                    <!-- Nút 1: Reset Tiến độ -->
+                    <div>
+                        <div class="font-label-lg font-bold text-on-surface">Đặt lại tiến độ</div>
+                        <button id="btn-reset-progress"
+                            class="w-full py-2.5 mt-1 rounded-lg bg-surface-container-high text-on-surface font-label-md font-bold hover:bg-outline-variant transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">refresh</span> Học lại từ đầu
+                        </button>
+                    </div>
+
+                    <!-- Nút 2: Xóa File -->
+                    <div>
+                        <div class="font-label-lg font-bold text-error">Xóa Dữ liệu</div>
+                        <button id="btn-clear-data"
+                            class="w-full py-2.5 mt-1 rounded-lg bg-error-container/50 text-error font-label-md font-bold hover:bg-error hover:text-on-error transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">delete_forever</span> Xóa File khỏi bộ
+                            nhớ
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Thêm thư viện SheetJS ở đây -->
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <!-- THƯ VIỆN LƯU TRỮ DỮ LIỆU VÀO INDEXED DB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
-    <!-- Khởi chạy JS -->
+    <!-- THƯ VIỆN SHEETJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- KHỞI CHẠY JAVASCRIPT -->
     <script type="module" src="js/app.js"></script>
-
 </body>
 
 </html>

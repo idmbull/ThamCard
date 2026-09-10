@@ -2,9 +2,7 @@ import { speak } from '../utils.js';
 
 export default {
     id: 'flashcard',
-    data: [],
-    settings: {},
-    currentIndex: 0,
+    data: [], settings: {}, currentIndex: 0, saveProgress: null,
 
     template() {
         return `
@@ -13,7 +11,6 @@ export default {
                 <span class="font-label-md uppercase tracking-wider font-semibold text-primary">Flashcard Mode</span>
                 <div class="flex items-center gap-space-xs font-bold text-primary"><span id="fc-current">0</span> / <span id="fc-total">0</span></div>
             </div>
-            
             <div class="w-full bg-surface-container-lowest rounded-2xl shadow-md border border-outline-variant/30 p-space-xl transition-all relative">
                 <div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
                     <div class="flex items-center gap-space-xs">
@@ -21,7 +18,6 @@ export default {
                         <span id="fc-pos" class="px-2 py-0.5 rounded-md bg-surface-container-low text-on-surface-variant font-label-md italic">pos</span>
                     </div>
                 </div>
-                
                 <div class="pt-space-md pb-space-sm flex flex-col items-center text-center">
                     <h1 id="fc-word" class="font-display-hero text-[40px] md:text-display-hero text-primary font-bold tracking-tight mb-1">Word</h1>
                     <div class="flex items-center gap-space-xs mt-1">
@@ -31,26 +27,22 @@ export default {
                         </button>
                     </div>
                 </div>
-                
                 <div class="mt-space-md flex flex-col gap-space-md border-t border-outline-variant/20 pt-space-md">
                     <div class="bg-surface-container-low/70 p-space-md rounded-xl" id="fc-box-meaning">
                         <div class="font-label-caps text-primary uppercase font-bold tracking-wider mb-1 flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">translate</span><span>Định nghĩa</span></div>
                         <p id="fc-meaning" class="font-body-lg text-on-surface font-semibold leading-relaxed">Meaning</p>
                     </div>
-                    
                     <div class="p-space-md rounded-xl bg-surface-variant/20" id="fc-box-ex">
                         <div class="font-label-caps text-on-surface-variant uppercase font-bold tracking-wider mb-1.5 flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-secondary">menu_book</span><span>Ví dụ ngữ cảnh</span></div>
                         <p id="fc-ex-en" class="font-body-md text-on-surface italic leading-normal">Example EN</p>
                         <p id="fc-ex-vi" class="font-body-sm text-on-surface-variant mt-1.5 font-normal">Example VI</p>
                     </div>
-                    
                     <div class="flex flex-col gap-1.5 px-1 mt-2" id="fc-box-collo">
                         <div class="font-label-caps text-on-surface-variant uppercase font-bold tracking-wider">Collocations</div>
                         <div id="fc-collocations" class="flex flex-wrap gap-space-xs"></div>
                     </div>
                 </div>
             </div>
-            
             <div class="w-full flex items-center justify-between gap-space-md mt-space-lg">
                 <button id="fc-prev" class="flex-1 flex items-center justify-center gap-space-xs py-space-sm px-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/40 text-on-surface font-label-lg shadow-sm transition-all active:translate-y-0.5"><span class="material-symbols-outlined text-[20px]">arrow_back</span><span class="font-bold">Trước</span></button>
                 <button id="fc-audio-btn" class="px-space-md py-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-label-md flex items-center gap-1.5 border border-outline-variant/30 transition-all active:translate-y-0.5"><span class="material-symbols-outlined text-[20px]">volume_up</span><span class="hidden sm:inline font-semibold">Nghe</span></button>
@@ -60,18 +52,31 @@ export default {
         `;
     },
 
-    init(data, settings) {
+    init(data, settings, savedIndex, saveProgressFn) {
         this.data = data;
         this.settings = settings;
-        this.currentIndex = 0;
+        this.currentIndex = savedIndex || 0; // Đọc tiến độ
+        this.saveProgress = saveProgressFn;  // Callback lưu tiến độ
 
         this.bindEvents();
         this.render();
     },
 
     bindEvents() {
-        document.getElementById('fc-next').onclick = () => { if (this.currentIndex < this.data.length - 1) { this.currentIndex++; this.render(); } };
-        document.getElementById('fc-prev').onclick = () => { if (this.currentIndex > 0) { this.currentIndex--; this.render(); } };
+        document.getElementById('fc-next').onclick = () => {
+            if (this.currentIndex < this.data.length - 1) {
+                this.currentIndex++;
+                if (this.saveProgress) this.saveProgress(this.currentIndex);
+                this.render();
+            }
+        };
+        document.getElementById('fc-prev').onclick = () => {
+            if (this.currentIndex > 0) {
+                this.currentIndex--;
+                if (this.saveProgress) this.saveProgress(this.currentIndex);
+                this.render();
+            }
+        };
 
         const playAud = () => speak(this.data[this.currentIndex].word);
         document.getElementById('fc-audio').onclick = playAud;

@@ -2,7 +2,7 @@ import { speak, shuffle } from '../utils.js';
 
 export default {
     id: 'dictation',
-    data: [], settings: {}, currentItem: null, isChecked: false, audioSpeed: 1.0, index: 0, hintClicks: 0,
+    data: [], settings: {}, currentItem: null, isChecked: false, audioSpeed: 1.0, index: 0, hintClicks: 0, saveProgress: null,
 
     template() {
         return `
@@ -67,10 +67,11 @@ export default {
         `;
     },
 
-    init(data, settings) {
+    init(data, settings, savedIndex, saveProgressFn) {
         this.data = shuffle(data);
         this.settings = settings;
-        this.index = 0;
+        this.index = savedIndex || 0;
+        this.saveProgress = saveProgressFn;
 
         this.bindEvents();
         this.loadQuestion();
@@ -78,7 +79,11 @@ export default {
 
     bindEvents() {
         document.getElementById('dict-play-btn').onclick = () => this.playAudio();
-        document.getElementById('dict-skip-btn').onclick = () => { this.index++; this.loadQuestion(); };
+        document.getElementById('dict-skip-btn').onclick = () => {
+            this.index++;
+            if (this.saveProgress) this.saveProgress(this.index);
+            this.loadQuestion();
+        };
         document.getElementById('dict-check-btn').onclick = () => this.checkAnswer();
 
         const s10 = document.getElementById('dict-speed-10');
@@ -100,7 +105,7 @@ export default {
 
     loadQuestion() {
         if (window.autoNextTimer) clearTimeout(window.autoNextTimer);
-        if (this.index >= this.data.length) { alert("Hoàn thành bài tập!"); return; }
+        if (this.index >= this.data.length) { alert("Chúc mừng! Bạn đã hoàn thành bài tập Gõ Chính Tả."); return; }
 
         this.isChecked = false; this.hintClicks = 0;
         this.currentItem = this.data[this.index];
@@ -161,7 +166,12 @@ export default {
     },
 
     checkAnswer() {
-        if (this.isChecked) { this.index++; this.loadQuestion(); return; }
+        if (this.isChecked) {
+            this.index++;
+            if (this.saveProgress) this.saveProgress(this.index);
+            this.loadQuestion();
+            return;
+        }
 
         const inputField = document.getElementById('dict-input');
         const userAnswer = inputField.value.trim().toLowerCase();
@@ -183,7 +193,6 @@ export default {
             checkBtn.classList.replace('bg-primary', 'bg-secondary');
             checkBtn.classList.replace('hover:bg-primary-container', 'hover:bg-secondary');
 
-            // TỰ ĐỘNG NEXT
             if (this.settings && this.settings.autoNext) {
                 window.autoNextTimer = setTimeout(() => { checkBtn.click(); }, this.settings.autoNextDelay);
             }
@@ -201,19 +210,9 @@ export default {
             checkBtn.innerHTML = `<span>Kế tiếp ➔</span>`;
         }
 
-        // ==========================================
-        // TÍNH NĂNG MỚI: TỰ ĐỘNG SHOW HINTS KHI TRẢ LỜI XONG
-        // ==========================================
         if (this.settings) {
-            // Check hiển thị IPA
-            if (this.settings.autoShowIpa && this.currentItem.phonetic) {
-                document.getElementById('dict-panel-ipa').classList.remove('hidden');
-            }
-
-            // Check hiển thị Nghĩa TV
-            if (this.settings.autoShowVi && this.currentItem.meaning) {
-                document.getElementById('dict-panel-vi').classList.remove('hidden');
-            }
+            if (this.settings.autoShowIpa && this.currentItem.phonetic) document.getElementById('dict-panel-ipa').classList.remove('hidden');
+            if (this.settings.autoShowVi && this.currentItem.meaning) document.getElementById('dict-panel-vi').classList.remove('hidden');
         }
     },
 
